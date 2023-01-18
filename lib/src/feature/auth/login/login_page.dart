@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc_login/src/feature/home/home_page.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  LoginPage({Key? key}) : super(key: key);
+
+  late final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -55,7 +59,10 @@ class LoginPage extends StatelessWidget {
   Widget _loginButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-      onPressed: (() {}),
+      onPressed: (() {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: ((context) => const HomePage())));
+      }),
       child: const Center(
         widthFactor: 3,
         heightFactor: 3,
