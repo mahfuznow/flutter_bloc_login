@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_login/src/feature/auth/login/login_bloc.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_page.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,7 +13,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: LoginPage(),
+      home: BlocProvider(
+        create: (context) => LoginBloc(),
+        child: LoginPage(),
+      ),
     );
   }
 }
