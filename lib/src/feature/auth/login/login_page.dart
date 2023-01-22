@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_bloc.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_event.dart';
+import 'package:flutter_bloc_login/src/feature/auth/login/login_state.dart';
 import 'package:flutter_bloc_login/src/feature/home/home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -37,30 +38,35 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _emailField() {
-    return TextField(
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        border: OutlineInputBorder(),
-        labelText: "Email",
-        hintText: "Enter your email",
-      ),
-      onChanged: (value) =>
-          context.read<LoginBloc>().add(EmailChanged(email: value)),
-    );
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextField(
+        decoration: InputDecoration(
+            prefixIcon: const Icon(Icons.email),
+            border: const OutlineInputBorder(),
+            labelText: "Email",
+            hintText: "Enter your email",
+            errorText: state.getEmailError()),
+        onChanged: (value) =>
+            context.read<LoginBloc>().add(EmailChanged(email: value)),
+      );
+    });
   }
 
   Widget _passwordField() {
-    return TextField(
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.lock),
-        border: OutlineInputBorder(),
-        labelText: "Password",
-        hintText: "Enter your password",
-      ),
-      obscureText: true,
-      onChanged: (value) =>
-          context.read<LoginBloc>().add(PasswordChanged(password: value)),
-    );
+    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
+      return TextField(
+        decoration: InputDecoration(
+          prefixIcon: const Icon(Icons.lock),
+          border: const OutlineInputBorder(),
+          labelText: "Password",
+          hintText: "Enter your password",
+          errorText: state.getPasswordError(),
+        ),
+        obscureText: true,
+        onChanged: (value) =>
+            context.read<LoginBloc>().add(PasswordChanged(password: value)),
+      );
+    });
   }
 
   Widget _loginButton() {
