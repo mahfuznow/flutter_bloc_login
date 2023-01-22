@@ -9,16 +9,24 @@ class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
   late BuildContext context;
+  late LoginBloc loginBloc;
 
   @override
   Widget build(BuildContext context) {
     this.context = context;
+    loginBloc = context.read<LoginBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
       body: _loginForm(),
     );
+  }
+
+  Widget _blocBuilder(
+      Widget Function(BuildContext context, LoginState state) builder) {
+    return BlocBuilder<LoginBloc, LoginState>(builder: builder);
   }
 
   Widget _loginForm() {
@@ -38,23 +46,23 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _emailField() {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return TextField(
+    return _blocBuilder(
+      (context, state) => TextField(
         decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.email),
-            border: const OutlineInputBorder(),
-            labelText: "Email",
-            hintText: "Enter your email",
-            errorText: state.getEmailError()),
-        onChanged: (value) =>
-            context.read<LoginBloc>().add(EmailChanged(email: value)),
-      );
-    });
+          prefixIcon: const Icon(Icons.email),
+          border: const OutlineInputBorder(),
+          labelText: "Email",
+          hintText: "Enter your email",
+          errorText: state.getEmailError(),
+        ),
+        onChanged: (value) => loginBloc.add(EmailChanged(email: value)),
+      ),
+    );
   }
 
   Widget _passwordField() {
-    return BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
-      return TextField(
+    return _blocBuilder(
+      (context, state) => TextField(
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock),
           border: const OutlineInputBorder(),
@@ -63,10 +71,9 @@ class LoginPage extends StatelessWidget {
           errorText: state.getPasswordError(),
         ),
         obscureText: true,
-        onChanged: (value) =>
-            context.read<LoginBloc>().add(PasswordChanged(password: value)),
-      );
-    });
+        onChanged: (value) => loginBloc.add(PasswordChanged(password: value)),
+      ),
+    );
   }
 
   Widget _loginButton() {
