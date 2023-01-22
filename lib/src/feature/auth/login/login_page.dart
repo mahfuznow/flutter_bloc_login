@@ -1,32 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_bloc_login/src/base/base_bloc_page.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_bloc.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_event.dart';
 import 'package:flutter_bloc_login/src/feature/auth/login/login_state.dart';
 import 'package:flutter_bloc_login/src/feature/home/home_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends BaseBlocPage<LoginBloc, LoginEvent, LoginState> {
   LoginPage({Key? key}) : super(key: key);
 
-  late BuildContext context;
-  late LoginBloc loginBloc;
-
   @override
-  Widget build(BuildContext context) {
-    this.context = context;
-    loginBloc = context.read<LoginBloc>();
-
+  Widget contents(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
       body: _loginForm(),
     );
-  }
-
-  Widget _blocBuilder(
-      Widget Function(BuildContext context, LoginState state) builder) {
-    return BlocBuilder<LoginBloc, LoginState>(builder: builder);
   }
 
   Widget _loginForm() {
@@ -46,7 +35,7 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget _emailField() {
-    return _blocBuilder(
+    return builder(
       (context, state) => TextField(
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.email),
@@ -55,13 +44,13 @@ class LoginPage extends StatelessWidget {
           hintText: "Enter your email",
           errorText: state.getEmailError(),
         ),
-        onChanged: (value) => loginBloc.add(EmailChanged(email: value)),
+        onChanged: (value) => bloc.add(EmailChanged(email: value)),
       ),
     );
   }
 
   Widget _passwordField() {
-    return _blocBuilder(
+    return builder(
       (context, state) => TextField(
         decoration: InputDecoration(
           prefixIcon: const Icon(Icons.lock),
@@ -71,7 +60,7 @@ class LoginPage extends StatelessWidget {
           errorText: state.getPasswordError(),
         ),
         obscureText: true,
-        onChanged: (value) => loginBloc.add(PasswordChanged(password: value)),
+        onChanged: (value) => bloc.add(PasswordChanged(password: value)),
       ),
     );
   }
@@ -79,10 +68,7 @@ class LoginPage extends StatelessWidget {
   Widget _loginButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
-      onPressed: (() {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: ((context) => const HomePage())));
-      }),
+      onPressed: (() => navigate(const HomePage())),
       child: const Center(
         widthFactor: 3,
         heightFactor: 3,
