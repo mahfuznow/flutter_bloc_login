@@ -6,7 +6,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginState()) {
     on<EmailChanged>((event, emit) => emit(state.copyWith(email: event.email)));
     on<PasswordChanged>(
-        (event, emit) => emit(state.copyWith(email: event.password)));
+        (event, emit) => emit(state.copyWith(password: event.password)));
     on<LoginClicked>((event, emit) => emit(state));
   }
 }
