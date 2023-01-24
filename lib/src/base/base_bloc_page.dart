@@ -5,20 +5,15 @@ abstract class BaseBlocPage<B extends Bloc<E, S>, E, S>
     extends StatelessWidget {
   BaseBlocPage({Key? key}) : super(key: key);
 
-  abstract B bloc;
+  abstract final B bloc;
   late final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return BlocProvider(
       create: (context) => bloc,
-      child: Builder(
-        builder: ((context) {
-          this.context = context;
-          bloc = context.read<B>();
-          return contents(context);
-        }),
-      ),
+      child: contents(context),
     );
   }
 
