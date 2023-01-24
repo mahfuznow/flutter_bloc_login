@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bloc_login/src/feature/auth/login/login_bloc.dart';
 
 abstract class BaseBlocPage<B extends Bloc<E, S>, E, S>
     extends StatelessWidget {
   BaseBlocPage({Key? key}) : super(key: key);
 
-  late final B bloc;
-  late final S state;
+  abstract B bloc;
   late final BuildContext context;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LoginBloc(),
+      create: (context) => bloc,
       child: Builder(
         builder: ((context) {
           this.context = context;

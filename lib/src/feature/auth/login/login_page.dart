@@ -9,6 +9,9 @@ class LoginPage extends BaseBlocPage<LoginBloc, LoginEvent, LoginState> {
   LoginPage({Key? key}) : super(key: key);
 
   @override
+  LoginBloc bloc = LoginBloc();
+
+  @override
   Widget contents(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
